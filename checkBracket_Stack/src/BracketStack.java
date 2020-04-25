@@ -9,15 +9,20 @@ public class BracketStack {
         array = new char[this.size];
     }
     private void ensureSize() {
-        int newSize = this.size*2;
-        if (index==size) {
-            array = Arrays.copyOf(array,newSize);
+        if (index==size-1) {
+            this.size = size*2;
+            array = Arrays.copyOf(array,this.size);
         }
     }
     public void push(char element) {
         ensureSize();
         array[index] = element;
         index++;
+    }
+    public void pushArray(char[]array) {
+        for (char c : array) {
+            push(c);
+        }
     }
     private boolean isEmpty() {
         if (index == 0) {
@@ -36,15 +41,15 @@ public class BracketStack {
     public boolean checkSymbol() {
         int countLeft = 0;
         int countRight = 0;
-        for (int i =0;i<=array.length && i+1<index;i++) {
-            if (array[i]=='(' && array[i+1] == ')') {
-                return false;
-            }
+        for (int i =0;i<array.length;i++) {
             if (array[i]=='(') {
                 countLeft++;
             }
             if (array[i]==')') {
                 countRight++;
+            }
+            if (array[i]=='(' && array[i+1] == ')') {
+                return false;
             }
         }
         if (countLeft==countRight) {
